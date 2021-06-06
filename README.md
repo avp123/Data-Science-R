@@ -1,2 +1,2 @@
 # Data Science R
- Files made with R that analyze a variety of datasets
+ Analysis of various datasets using the programming language R
