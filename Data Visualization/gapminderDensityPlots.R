@@ -2,8 +2,12 @@
 library(dslabs)
 data(gapminder)
 
+# add dollars per day variable and define past year
+gapminder <- gapminder %>%
+  mutate(dollars_per_day = gdp/population/365)
+past_year <- 1970
+
 # Faceted Smooth Density Plots
-# see the code below the previous video for variable definitions
 
 # smooth density plots - area under each curve adds to 1
 gapminder %>%
