@@ -2,13 +2,23 @@
 library(dslabs)
 data(gapminder)
 
-# add dollars per day variable and define past year
+# add dollars per day variable and define past and present year
 gapminder <- gapminder %>%
   mutate(dollars_per_day = gdp/population/365)
 past_year <- 1970
+present_year <- 2010
+
+# define Western countries
+west <- c("Western Europe", "Northern Europe", "Southern Europe", "Northern America", "Australia and New Zealand")
+
+# define countries that have data available in both years
+country_list_1 <- gapminder %>%
+  filter(year == past_year & !is.na(dollars_per_day)) %>% .$country
+country_list_2 <- gapminder %>%
+  filter(year == present_year & !is.na(dollars_per_day)) %>% .$country
+country_list <- intersect(country_list_1, country_list_2)
 
 # Faceted Smooth Density Plots
-
 # smooth density plots - area under each curve adds to 1
 gapminder %>%
   filter(year == past_year & country %in% country_list) %>%
