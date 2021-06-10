@@ -2,8 +2,6 @@
 library(tidyverse)
 library(dslabs)
 data(temp_carbon)
-data(greenhouse_gases)
-data(historic_co2)
 
 # Different ways to find latest year carbon emissions were reported in temp_carbon
 # First way
