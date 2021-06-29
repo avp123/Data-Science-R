@@ -33,7 +33,7 @@ x/200000
 # Interest rate for 1% probability of losing money
 l <- loss_per_foreclosure
 z <- qnorm(0.01)
-x <- -l*( n*p - z*sqrt(n*p*(1-p)))/ ( n*(1-p) + z*sqrt(n*p*(1-p)))\x
+x <- -l*( n*p - z*sqrt(n*p*(1-p)))/ ( n*(1-p) + z*sqrt(n*p*(1-p)))
 x/180000    # interest rate
 loss_per_foreclosure*p + x*(1-p)    # expected value of the profit per loan
 n*(loss_per_foreclosure*p + x*(1-p)) # expected value of the profit over n loans
