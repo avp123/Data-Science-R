@@ -164,3 +164,37 @@ l*p + x*(1-p)
 mu <- n*(l*p + x*(1-p))
 mu
 
+# Monte Carlo simulation that runs 10,000 times to determine probability of losing money on 1000 policies given new premium and seed of 28
+set.seed(28, sample.kind = "Rounding")
+
+B <- 10000
+losing_money <- replicate(B, {
+  draws <- sample(c(x, l), n, prob=c(1-p, p), replace = TRUE)
+  sum(draws)
+})
+
+mean(losing_money < 0)
+
+### Monte Carlo using a seed of 29 that runs over B = 10000 iterations.
+### Randomly change p = .015 by a value between -.01 and .01 
+### while using the new p to generate a sample of n = 1000 policies with premium x and loss l
+### Find the expected value of 1000 policies with this Monte Carlo
+
+# n, p, l and x as defined in the problem information
+set.seed(29)    # in R 3.6, set.seed(29, sample.kind="Rounding")
+
+thousand_policy_value <- replicate(B, {
+  new_p <- p + sample(seq(-0.01, 0.01, length = 100), 1)
+  draws <- sample(c(x, l), n, 
+                  prob=c(1-new_p, new_p), replace = TRUE) 
+  sum(draws)
+})
+
+mean(thousand_policy_value) # expected value of profit
+
+# Probability of losing money using Monte Carlo simulation called thousand_policy_value
+mean(thousand_policy_value < 0)
+
+# Probability of losing more than 1 million dollars using Monte Carlo simulation called thousand_policy_value
+mean(thousand_policy_value < -1000000)
+
