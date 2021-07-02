@@ -123,4 +123,44 @@ data.frame(d, d_lose_million) %>%
   pull(d) %>%
   min()
 
-# 
+# Sampling model that determines profit/loss in millions if simulation is run 1000 times and probability of defaulting is .015
+set.seed(25, sample.kind = "Rounding")
+
+p <- .015
+loss <- -150000
+profit <- 1150
+n <- 1000
+
+outcomes <- sample(c(loss, profit), n, prob = c(p, 1-p), replace = TRUE)
+sum(outcomes)/10^6
+
+# Probability of losing 1 million or more dollars using Monte Carlo simulation that repeats 10000 times to simulate range of profits/losses over 1000 loans
+set.seed(27, sample.kind = "Rounding")
+B <- 10000
+
+profits <- replicate(B, {
+  outcomes <- sample(c(loss, profit), n, prob = c(p, 1-p), replace = TRUE)
+  sum(outcomes)/10^6
+})
+
+mean(profits < -1)
+
+### Now there is demand for life insurance because of the previously mentioned pandemic,
+### so the company wants to find a premium cost that keeps the probability of losing money under 5%,
+### and the death rate is still .015.
+
+# Finding premium required for 5% chanc of losing money given 1,000 loans and loss per claim of -150,000 dollars
+p <- .015
+n <- 1000
+l <- -150000
+z <- qnorm(.05)
+x <- -l*( n*p - z*sqrt(n*p*(1-p)))/ ( n*(1-p) + z*sqrt(n*p*(1-p)))
+x
+
+# Expected profit per policy at this premium rate
+l*p + x*(1-p)
+
+# Expected profit for 1000 policies at this premium rate
+mu <- n*(l*p + x*(1-p))
+mu
+
