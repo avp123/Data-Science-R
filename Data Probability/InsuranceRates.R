@@ -68,3 +68,59 @@ sigma_sum
 # Probability of losing money on 1000 policies to 50 year old males
 pnorm(0, mu_sum, sigma_sum)
 
+### We will now look at a scenario in which a lethal pandemic disease increases 
+### the probability of death within 1 year for a 50 year old to .015. 
+### Unable to predict the outbreak, the company has sold 1,000 $150,000 
+### life insurance policies for $1,150.
+
+# Expected value of company's profits over 1000 policies
+p <- .015    # probability of claim
+a <- -150000    # loss per claim
+b <- 1150    # premium - profit when no claim
+n <- 1000
+
+exp_val <- n*(a*p + b*(1-p))
+exp_val
+
+# Standard error of expected value of company's profits over 1000 policies
+se <- sqrt(n) * abs(b-a) * sqrt(p*(1-p))
+se
+
+# Probability of company losing money
+pnorm(0, exp_val, se)
+
+# Probability of company losing more than 1 million dollars
+pnorm(-1*10^6, exp_val, se)
+
+# Finding lowest death probability in sequence from .01 to .03 jumping by .001 that results in chance of losing money exceeding 90%
+p <- seq(.01, .03, .001)
+a <- -150000    # loss per claim
+b <- 1150    # premium - profit when no claim
+n <- 1000
+
+p_lose_money <- sapply(p, function(p){
+  exp_val <- n*(a*p + b*(1-p))
+  se <- sqrt(n) * abs(b-a) * sqrt(p*(1-p))
+  pnorm(0, exp_val, se)
+})
+
+data.frame(p, p_lose_money) %>%
+  filter(p_lose_money > 0.9) %>%
+  pull(p) %>%
+  min()
+
+# Finding lowest death probability in sequence from .01 to .03 jumping by .0025 that results in chance of losing 1 million dollars exceeding 90%
+d <- seq(.01, .03, .0025)
+
+d_lose_million <- sapply(d, function(d){
+  exp_val <- n*(a*d + b*(1-d))
+  se <- sqrt(n) * abs(b-a) * sqrt(d*(1-d))
+  pnorm(-1*10^6, exp_val, se)
+})
+
+data.frame(d, d_lose_million) %>%
+  filter(d_lose_million > 0.9) %>%
+  pull(d) %>%
+  min()
+
+# 
