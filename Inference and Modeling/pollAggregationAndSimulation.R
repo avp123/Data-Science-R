@@ -22,6 +22,7 @@ d_hat <- polls %>%
   summarize(avg = sum(estimate*sample_size) / sum(sample_size)) %>%
   .$avg
 
+p_hat <- (1+d_hat)/2
 
 moe <- 2*1.96*sqrt(p_hat*(1-p_hat)/sum(polls$sample_size)) 
 
