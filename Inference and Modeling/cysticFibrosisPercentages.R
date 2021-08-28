@@ -1,4 +1,4 @@
-# Monte Carlo showing rates of cystic fibrosis
+# Monte Carlo showing rates of cystic fibrosis, used Bayes' Theorem beforehand to find expected value of false positives to be around 2%
 
 prev <- 0.00025    # disease prevalence
 N <- 100000    # number of tests
